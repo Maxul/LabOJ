@@ -1,0 +1,9 @@
+struct foo3 {
+        short s;
+        char c;
+};
+struct foo4 {
+        char c;
+        char **argv;
+        short x;
+};

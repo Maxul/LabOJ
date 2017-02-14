@@ -1,0 +1,8 @@
+Please submit your own implementations of the following functions without <string.h> included:
+
+static int strend(char *s, char *t);
+static char *strncpy(char *dest, const char *src, size_t n);
+static char *strncat(char *dest, const char *src, size_t n);
+static int strncmp(const char *s1, const char *s2, size_t n);
+
+Notice: no main() function is required.

@@ -1,0 +1,12 @@
+strend qwert ert
+strend qwert tre
+strncpy 12345 6
+strncpy 12345 4
+strncpy 12345 0
+strncat 12345 6
+strncat 12345 4
+strncat 12345 0
+strncmp 123 1234 4
+strncmp 123 1234 3
+strncmp 123 1234 0
+strncmp 1234 123 4 

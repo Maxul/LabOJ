@@ -1,0 +1,33 @@
+在课本示例5.11的基础上，添加-r及-f选项，前者允许快排结果逆序，后者忽略输入文本的大小写敏感。要求所有选项组合可以配合使用，如-r -f、-n -r、-rn或-fr。
+如输入文本：
+Cisco
+Apple
+Huawei
+Lenovo
+Yahoo
+intel
+Bell
+Google
+Mircosoft
+IBM
+Oracle
+经过./a.out -r -f输出：
+Yahoo
+Oracle
+Mircosoft
+Lenovo
+intel
+IBM
+Huawei
+Google
+Cisco
+Bell
+Apple
+输入数字文本如下：
+271828
+123456
+314159
+经过程序./a.out -nr整理输出：
+314159
+271828
+123456

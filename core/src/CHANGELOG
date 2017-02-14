@@ -1,0 +1,6 @@
+Using SANDBOX exe < in > out instead of dup2() stdin/out in source code.
+
+Applying variadic macros.
+
+A posix_spawn Example in C to Create Child Process on Linux.
+

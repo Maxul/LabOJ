@@ -1,0 +1,12 @@
+strend: 1
+strend: 0
+strncpy: 12345
+strncpy: 1234
+strncpy: 
+strncat: 12345
+strncat: 123451234
+strncat: 123451234
+strncmp: -52
+strncmp: 0
+strncmp: 0
+strncmp: 52

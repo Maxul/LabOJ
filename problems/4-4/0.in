@@ -1,0 +1,25 @@
+push 1.0
+push 2.0
+push 3.0
+top
+pop
+top
+pop
+top
+pop
+top
+push 1.0
+duplicate
+top
+pop
+top
+clear
+swaps
+push 123.0
+swaps
+push 234.0
+swaps
+top
+pop
+top
+clear

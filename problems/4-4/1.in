@@ -1,0 +1,12 @@
+clear
+push 1.2
+top
+swaps
+duplicate
+push 3.2
+swaps
+top
+pop
+swaps
+pop
+top

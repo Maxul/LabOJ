@@ -1,0 +1,9 @@
+struct foo1 {
+	char *p;
+	long long l;
+	char x;
+};
+struct foo2 {
+	char *p[11];
+	char c;
+};

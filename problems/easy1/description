@@ -1,0 +1,11 @@
+Description:
+Each line provides two hexadecimal non-negatives with a blank in between.
+Sum them up and print the result in the binary format.
+
+Input:
+0xf 0x1
+0x0 0x2
+
+Output:
+10000
+10

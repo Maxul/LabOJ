@@ -1,0 +1,12 @@
+我们已经学会如何逆置一个字符串。除了借助其判断回文子串外，几乎看不出其用途。
+
+现在我们设计一个更富有实际意义的小工具，逆置词序——
+请以空格为界，连续符号跟随最近的字母。
+
+<h2>Input</h2>
+I am who I am.
+James loves Bryant^-^
+
+<h2>Output</h2>
+am. I who am I
+Bryant^-^ loves James

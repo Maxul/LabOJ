@@ -1,0 +1,21 @@
+恰如我们生活于三维球壳表面一样，进程变量的电子状态活跃在扁平内存条上的楔形电容中。<span style="background:yellow;">C语言结构体在内存布局时并不总是将相邻声明的变量连续码放</span>。出于处理器的执行效率考虑，编译器设计者使用了一种神奇的填充技术，俗称“<span style="background:yellow;">内存对齐</span>”。为什么要对齐呢？按照字节次第排列数据固然很好，但是CPU更善于一次处理单字长或双字长的数据。这就好比我们吃米饭，并不是一粒粒地吃，而是一口口吃。
+
+在32位的Windows NT操作系统平台上，考虑使用如下结构体：
+struct tag {
+    char c;        // 1 byte
+    double *ptr;   // 4 bytes
+    short s;       // 2 bytes
+};
+在主函数中使用printf("%u", sizeof(struct tag));会得到12。理由是所有的数据都向4的整数倍对齐。
+
+输入若干个标准结构体定义(每行一条声明语句)，输出在Win-32-bit机器上使用C语言sizeof得到的结果。
+Input:
+struct test {
+    char c[2];     // 2 byte
+    short s;       // 2 bytes
+    int *ptr;      // 4 bytes
+};
+Output:
+8
+
+<center><span style="color:red;font-size:24px;">在尚未搞懂相关概念以前，请不要轻易尝试此题。<br>但此题的研究有助于你向系统级设计者转变。</span></center>
