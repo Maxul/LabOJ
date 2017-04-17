@@ -24,6 +24,7 @@
         </nav>
     </header>
     <main class="container">
+        <div class="row"></div>
         <div class="row">
             <div class="col s12 m8">
                 <h5>某个问题</h5>
@@ -32,7 +33,8 @@
 
 
 <?php
-
+    include_once('php/config.php');
+    session_start();
 
     include_once('php/Parsedown.php');
 
@@ -54,12 +56,38 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Alita</td><td>33%</td><td>2017-06-12 13:14:15</td></tr>
-                        <tr><td>Odd</td><td>24%</td><td>2017-06-12 13:14:15</td></tr>
-                        <tr><td>Uric</td><td>10%</td><td>2017-06-12 13:14:15</td></tr>
-                        <tr><td>Jeremy</td><td>10%</td><td>2017-06-12 13:14:15</td></tr>
-                        <tr><td>Yumi</td><td>10%</td><td>2017-06-12 13:14:15</td></tr>
-                        <tr><td>Xana</td><td>0%</td><td>2017-06-12 13:14:15</td></tr>
+
+
+<?php
+    include_once('php/connectDB.php');
+
+    try {
+        if (!isset($_GET['problem']) || empty($_GET['problem'])) {
+			throw new Exception('Bad request');
+		}
+
+        try {
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $dbh->beginTransaction();
+
+            $stmt = $dbh->prepare("SELECT * FROM `userpassrate` WHERE question = :question ORDER BY passRate DESC");
+            $stmt->bindParam(":question", $_GET['problem']);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($rows as $row) {
+                print('<tr><td>' . $row["user"] . '</td><td>' . $row["passRate"] . '</td><td>' . $row['time'] .'</td></tr>');
+            }
+        } catch(Exception $DBerror) {
+
+        }
+    } catch (Exception $e) {
+
+    }
+?>
+
+
+
                     </tbody>
                 </table>
             </div>
@@ -69,7 +97,7 @@
         <div class="footer-copyright">
             <div class="container">
                 Copyright © 2015 - 2020 Maxul Lee, Binary Bin. All rights reserved.
-                <a class="grey-text text-lighten-4 right" href="#!">提供建议</a>
+                <a class="grey-text text-lighten-4 right" href="https://forms.office.com/Pages/ResponsePage.aspx?id=YYn0zalXFEGXdnq1XqVeHGVixBuFLGZPrqmtuNI8RXFUQ1daREFQRDMwNFRWMUhGUlNLN0c1NDNSMS4u">提供建议</a>
             </div>
         </div>
     </footer>
