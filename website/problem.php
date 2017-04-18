@@ -4,7 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable = no" />
-    <title>Lab Online Judge</title>
+
+
+<?php
+    include_once('php/config.php');
+    session_start();
+
+    $pro = $_GET['problem'];
+    echo "<title>$pro | Lab Online Judge</title>";
+?>
+
+
     <link type="text/css" rel="stylesheet" href="css/materialize.css" />
     <link type="text/css" rel="stylesheet" href="css/icon.css" />
     <link type="text/css" rel="stylesheet" href="css/common.css" />
@@ -14,11 +24,23 @@
     <header>
         <nav>
             <div class="nav-wrapper container">
-                <a href="index.html" class="brand-logo">Kernighan &alefsym; Ritchie Creative Studio</a>
+                <a href="index.php" class="brand-logo">Kernighan &alefsym; Ritchie Creative Studio</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="index.html">题目列表</a></li>
+                    <li><a href="index.php">题目列表</a></li>
                     <li><a href="me.html">我的成就</a></li>
-                    <li><a href="revoke.html">注销</a></li>
+
+
+<?php
+
+    if (isset($_SESSION['userName']) && isset($_SESSION['userID']) && !empty($_SESSION['userID'])) {
+        echo "<li><a href=\"revoke.html\">注销</a></li>";
+    } else {
+        echo "<li><a href=\"login.html\">登录</a></li>";
+    }
+
+?>
+
+
                 </ul>
             </div>
         </nav>
@@ -27,19 +49,18 @@
         <div class="row"></div>
         <div class="row">
             <div class="col s12 m8">
-                <h5>某个问题</h5>
 
 
 
 
 <?php
-    include_once('php/config.php');
-    session_start();
-
+    echo "<h5>$pro</h5>";
     include_once('php/Parsedown.php');
 
     $Parsedown = new Parsedown();
-    echo $Parsedown->text(file_get_contents("Parsedown.md"));
+
+    $description = "../problems/$pro/description";
+    echo $Parsedown->text(file_get_contents($description));
 ?>
 
 
@@ -70,7 +91,7 @@
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $dbh->beginTransaction();
 
-            $stmt = $dbh->prepare("SELECT * FROM `userpassrate` WHERE question = :question ORDER BY passRate DESC");
+            $stmt = $dbh->prepare("SELECT * FROM `userpassrate` WHERE question = :question ORDER BY passRate DESC LIMIT 10");
             $stmt->bindParam(":question", $_GET['problem']);
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -78,6 +99,50 @@
             foreach ($rows as $row) {
                 print('<tr><td>' . $row["user"] . '</td><td>' . $row["passRate"] . '</td><td>' . $row['time'] .'</td></tr>');
             }
+
+?>
+
+
+
+                    </tbody>
+                </table>
+                <h6>我的通过率 
+
+
+<?php
+            $stmt = $dbh->prepare("SELECT * FROM `userpassrate` WHERE question = :question AND user = :user");
+            $stmt->bindParam(":question", $_GET['problem']);
+            $stmt->bindParam(":user", $_SESSION['userID']);
+            $stmt->execute();
+            $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            print($rows['passRate']);
+?>
+
+
+
+                </h6>
+                <table class="highlight">
+                    <thead>
+                        <tr>
+                            <th>时间</th><th>结果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+<?php
+            $stmt = $dbh->prepare("SELECT * FROM `judge` WHERE question = :question AND user = :user ORDER BY `time` DESC");
+            $stmt->bindParam(":question", $_GET['problem']);
+            $stmt->bindParam(":user", $_SESSION['userID']);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($rows as $row) {
+                print('<tr><td>' . $row['time'] . '</td><td>' . $row['result'] . '</td></tr>');
+            }
+
+            $dbh->commit();
         } catch(Exception $DBerror) {
 
         }
@@ -88,6 +153,7 @@
 
 
 
+                        
                     </tbody>
                 </table>
             </div>

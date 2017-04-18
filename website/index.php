@@ -14,11 +14,25 @@
     <header>
         <nav>
             <div class="nav-wrapper container">
-                <a href="index.html" class="brand-logo">Kernighan &alefsym; Ritchie Creative Studio</a>
+                <a href="index.php" class="brand-logo">Kernighan &alefsym; Ritchie Creative Studio</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="index.html">题目列表</a></li>
+                    <li><a href="index.php">题目列表</a></li>
                     <li><a href="me.html">我的成就</a></li>
-                    <li><a href="revoke.html">注销</a></li>
+
+<?php
+    include_once('php/config.php');
+    session_start();
+
+    if (isset($_SESSION['userName']) && isset($_SESSION['userID']) && !empty($_SESSION['userID'])) {
+        echo "<li><a href=\"revoke.html\">注销</a></li>";
+    } else {
+        echo "<li><a href=\"login.html\">登录</a></li>";
+    }
+
+?>
+
+
+
                 </ul>
             </div>
         </nav>
@@ -30,12 +44,31 @@
                 <h5>题目列表</h5>
                 <table class="highlight">
                     <tbody>
-                        <tr><td>第一章</td></tr>
-                        <tr><td>第二章</td></tr>
-                        <tr><td>第三章</td></tr>
-                        <tr><td>第四章</td></tr>
-                        <tr><td>第五章</td></tr>
-                        <tr><td>第六章</td></tr>
+
+<?php
+
+    include_once('php/connectDB.php');
+
+    try {
+
+        try {
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $dbh->beginTransaction();
+
+
+			$problems = scandir("../problems");
+			foreach ($problems as $pro) {
+				$res_file = "../problems/$pro/description";
+				if (file_exists($res_file) && (fileperms($res_file) & 0x0004)) {
+					echo "<tr><td><a href=\"problem.php?problem=$pro\">$pro</a></td></tr>";
+				}
+			}
+
+?>
+
+
+
+
                     </tbody>
                 </table>
             </div>
@@ -48,12 +81,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Alita</td><td>最大公因数</td><td>Accepted</td></tr>
-                        <tr><td>Odd</td><td>Lyoko</td><td>Accepted</td></tr>
-                        <tr><td>Uric</td><td>Replica</td><td>Accepted</td></tr>
-                        <tr><td>Jeremy</td><td>最大公因数</td><td>Accepted</td></tr>
-                        <tr><td>Yumi</td><td>最大公因数</td><td>Accepted</td></tr>
-                        <tr><td>Xana</td><td>最大公因数</td><td>Accepted</td></tr>
+
+
+<?php
+            $stmt = $dbh->prepare("SELECT * FROM `judge` ORDER BY `time` DESC LIMIT 10");
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($rows as $row) {
+                print('<tr><td>' . $row["user"] . '</td><td>' . $row["question"] . '</td><td>' . $row['result'] .'</td></tr>');
+            }
+            
+            $dbh->commit();
+        } catch(Exception $DBerror) {
+
+        }
+    } catch (Exception $e) {
+
+    }
+?>
+
+
+
                     </tbody>
                 </table>
             </div>
