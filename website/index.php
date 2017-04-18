@@ -22,9 +22,10 @@
 <?php
     include_once('php/config.php');
     session_start();
-
+    
     if (isset($_SESSION['userName']) && isset($_SESSION['userID']) && !empty($_SESSION['userID'])) {
-        echo "<li><a href=\"revoke.html\">注销</a></li>";
+        $userName = $_SESSION['userName'];
+        echo "<li>$userName</li><li><a href=\"revoke.html\">注销</a></li>";
     } else {
         echo "<li><a href=\"login.html\">登录</a></li>";
     }

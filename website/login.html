@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable = no" />
+    <title>登录 | Lab Online Judge</title>
+    <link type="text/css" rel="stylesheet" href="css/materialize.css" />
+    <link type="text/css" rel="stylesheet" href="css/icon.css" />
+    <link type="text/css" rel="stylesheet" href="css/common.css" />
+</head>
+
+<body class="blue-grey">
+    <main class="container">
+        <div class="row"></div>
+        <div id="sign-in-card" class="row">
+            <div class="col s12 m6 offset-m3">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content center white-text">
+                        <i class="material-icons large">account_circle</i>
+                        <form action="php/authorize.php" method="post">
+                            <div class="row"></div>
+                            <input placeholder="邮箱" id="email" name="email" type="email" class="validate grey-text">
+                            <div class="row"></div>
+                            <div class="row valign-wrapper">
+                                <div class="col s8 offset-s2">
+                                    <input class="btn" type="submit" value="登录">
+                                </div>
+                                <div class="col s2"><a id="sign-up" class="right" href="#">注册</a></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="sign-up-card" class="row hide">
+            <div class="col s12 m6 offset-m3">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content center white-text">
+                        <i class="material-icons large">assignment</i>
+                        <form action="php/authorize.php" method="post">
+                            <div class="row"></div>
+                            <input name="signUp" value="true" hidden>
+                            <input placeholder="邮箱" id="email" name="email" type="email" class="validate grey-text">
+                            <input placeholder="昵称" id="userName" name="userName" type="text" class="validate grey-text">
+                            <input placeholder="学号" id="userID" name="userID" type="tel" pattern="\d{10}" class="validate grey-text">
+                            <div class="row"></div>
+                            <div class="row valign-wrapper">
+                                <div class="col s8 offset-s2">
+                                    <input class="btn" type="submit" value="注册">
+                                </div>
+                                <div class="col s2"><a id="sign-in" class="right" href="#">登录</a></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row center">
+            <p class="white-text" id="err-info"></p>
+        </div>
+    </main>
+    <footer class="page-footer">
+        <div class="footer-copyright">
+            <div class="container">
+                Copyright © 2015 - 2020 Maxul Lee, Binary Bin. All rights reserved.
+                <a class="grey-text text-lighten-4 right" href="https://forms.office.com/Pages/ResponsePage.aspx?id=YYn0zalXFEGXdnq1XqVeHGVixBuFLGZPrqmtuNI8RXFUQ1daREFQRDMwNFRWMUhGUlNLN0c1NDNSMS4u">提供建议</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.qrcode.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script>
+        function getArgs(){
+            var args = {};
+            var match = null;
+            var search = decodeURIComponent(location.search.substring(1));
+            var reg = /(?:([^&]+)=([^&]+))/g;
+            while((match = reg.exec(search))!==null){
+                args[match[1]] = match[2];
+            }
+            return args;
+        }
+
+        $(document).ready(function () {
+            $("#sign-up").click(function () {
+                $("#err-info").html("");
+                $("#sign-in-card").addClass("hide");
+                $("#sign-up-card").removeClass("hide");
+            });
+            $("#sign-in").click(function () {
+                $("#err-info").html("");
+                $("#sign-up-card").addClass("hide");
+                $("#sign-in-card").removeClass("hide");
+            });
+
+            var errInfo = getArgs().err;
+            $("#err-info").html(errInfo);
+        })
+    </script>
+</body>
+
+</html>
