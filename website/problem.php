@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable = no" />
 
 
-<?php
+    <?php
     include_once('php/config.php');
     session_start();
 
@@ -15,9 +15,9 @@
 ?>
 
 
-    <link type="text/css" rel="stylesheet" href="css/materialize.css" />
-    <link type="text/css" rel="stylesheet" href="css/icon.css" />
-    <link type="text/css" rel="stylesheet" href="css/common.css" />
+        <link type="text/css" rel="stylesheet" href="css/materialize.css" />
+        <link type="text/css" rel="stylesheet" href="css/icon.css" />
+        <link type="text/css" rel="stylesheet" href="css/common.css" />
 </head>
 
 <body>
@@ -30,7 +30,7 @@
                     <li><a href="me.html">我的成就</a></li>
 
 
-<?php
+                    <?php
 
     if (isset($_SESSION['userName']) && isset($_SESSION['userID']) && !empty($_SESSION['userID'])) {
         echo "<li><a href=\"revoke.html\">注销</a></li>";
@@ -53,7 +53,7 @@
 
 
 
-<?php
+                <?php
     echo "<h5>$pro</h5>";
     include_once('php/Parsedown.php');
 
@@ -64,22 +64,21 @@
 ?>
 
 
-
-
-
             </div>
             <div class="col s12 m4">
                 <h6>提交动态</h6>
                 <table class="highlight">
                     <thead>
                         <tr>
-                            <th>用户</th><th>通过率</th><th>最晚提交时间</th>
+                            <th>用户</th>
+                            <th>通过率</th>
+                            <th>最晚提交时间</th>
                         </tr>
                     </thead>
                     <tbody>
 
 
-<?php
+                        <?php
     include_once('php/connectDB.php');
 
     try {
@@ -106,10 +105,10 @@
 
                     </tbody>
                 </table>
-                <h6>我的通过率 
+                <h6>我的通过率
 
 
-<?php
+                    <?php
             $stmt = $dbh->prepare("SELECT * FROM `userpassrate` WHERE question = :question AND user = :user");
             $stmt->bindParam(":question", $_GET['problem']);
             $stmt->bindParam(":user", $_SESSION['userID']);
@@ -125,13 +124,14 @@
                 <table class="highlight">
                     <thead>
                         <tr>
-                            <th>时间</th><th>结果</th>
+                            <th>时间</th>
+                            <th>结果</th>
                         </tr>
                     </thead>
                     <tbody>
 
 
-<?php
+                        <?php
             $stmt = $dbh->prepare("SELECT * FROM `judge` WHERE question = :question AND user = :user ORDER BY `time` DESC");
             $stmt->bindParam(":question", $_GET['problem']);
             $stmt->bindParam(":user", $_SESSION['userID']);
@@ -153,13 +153,35 @@
 
 
 
-                        
+
                     </tbody>
                 </table>
             </div>
         </div>
     </main>
+    <div id="footer-placeholder"></div>
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Modal Header</h4>
+            <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+
     <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <h5 id="code-section-toggle" class="white-text">提交代码</h5>
+                <div id="code-section">
+                    <textarea id="editor" required="true"></textarea>
+                    <textarea name="code" id="code" style="display:none" required="true"></textarea>
+                    <a id="submit-code" class="btn">提交</a>
+                </div>
+            </div>
+        </div>
         <div class="footer-copyright">
             <div class="container">
                 Copyright © 2015 - 2020 Maxul Lee, Binary Bin. All rights reserved.
@@ -171,8 +193,46 @@
 
     <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/ace.js"></script>
     <script>
         $(document).ready(function () {
+            $("#code-section").hide();
+            $("#code-section-toggle").click(function () {
+                $("#code-section").toggle(250, function () {
+                    $("#footer-placeholder").css({
+                        "width": "100%",
+                        "height": $("footer").css("height")
+                    });
+                });
+            });
+
+            var editor = ace.edit("editor");
+            var textarea = $('#code');
+
+            editor.setTheme("ace/theme/textmate");
+            editor.session.setMode("ace/mode/c_cpp");
+            editor.setAutoScrollEditorIntoView(true);
+            editor.setOption("maxLines", 7);
+            editor.setOption("minLines", 7);
+            editor.setFontSize("20px");
+
+            editor.on('change', function () {
+                textarea.val(editor.getValue());
+            });
+
+            textarea.val(editor.getValue());
+
+            $("#submit-code").click(function () {
+                $.getJON('php/JUDGE.php', { code: textarea.val() }, function (data) {
+
+                });
+            });
+
+            $("footer").css({
+                "position": "fixed",
+                "bottom": "0px",
+                "width": "100%"
+            });
         })
     </script>
 </body>
