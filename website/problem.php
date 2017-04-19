@@ -225,7 +225,7 @@
     <footer class="page-footer">
         <div class="container">
             <div class="row">
-                <h5 id="code-section-toggle" class="white-text">提交代码</h5>
+                <h5 id="code-section-toggle" class="white-text">提交代码 <a class="btn btn-floating z-depth-0 toggle-btn-floating"><i class="material-icons">keyboard_arrow_up</i></a></h5>
                 <div id="code-section">
                     <textarea id="editor" required="true"></textarea>
                     <textarea name="code" id="code" style="display:none" required="true"></textarea>
@@ -264,6 +264,7 @@
                 "height": $("footer").css("height")
             });
             $("#code-section-toggle").click(function () {
+                $(".toggle-btn-floating").toggleClass("active");
                 $("#code-section").animate({height: 'toggle'}, 250, function () {
                     $("#footer-placeholder").css({
                         "width": "100%",
