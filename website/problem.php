@@ -161,13 +161,64 @@
     </main>
     <div id="footer-placeholder"></div>
 
-    <div id="modal1" class="modal">
+    <div id="result-modal" class="modal">
         <div class="modal-content">
-            <h4>Modal Header</h4>
-            <p>A bunch of text</p>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+            <h4>评测结果</h4>
+            <div id="preloader" class="center-align">
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-blue">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-red">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-yellow">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-green">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <pre id="result-wrapper" class="hide">
+                <code id="result-area"></code>
+            </pre>
+            <a href="#!" class="modal-action modal-close btn">好</a>
         </div>
     </div>
 
@@ -195,10 +246,21 @@
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script type="text/javascript" src="js/ace.js"></script>
     <script>
+        function getArgs() {
+            var args = {};
+            var match = null;
+            var search = decodeURIComponent(location.search.substring(1));
+            var reg = /(?:([^&]+)=([^&]+))/g;
+            while ((match = reg.exec(search)) !== null) {
+                args[match[1]] = match[2];
+            }
+            return args;
+        }
         $(document).ready(function () {
+            $('.modal').modal();
             $("#code-section").hide();
             $("#code-section-toggle").click(function () {
-                $("#code-section").toggle(250, function () {
+                $("#code-section").animate({height: 'toggle'}, 250, function () {
                     $("#footer-placeholder").css({
                         "width": "100%",
                         "height": $("footer").css("height")
@@ -221,10 +283,15 @@
             });
 
             textarea.val(editor.getValue());
-
+            var chapter = getArgs().problem;
             $("#submit-code").click(function () {
-                $.getJON('php/JUDGE.php', { code: textarea.val() }, function (data) {
-
+                $('#result-modal').modal('open');
+                $("#preloader").removeClass("hide");
+                $("#result-wrapper").addClass("hide");
+                $.post('php/judgeX.php', { chapter: chapter, code: textarea.val() }, function (data) {
+                    $("#preloader").addClass("hide");
+                    $("#result-area").html("\n" + data);
+                    $("#result-wrapper").removeClass("hide");
                 });
             });
 
