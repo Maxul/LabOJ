@@ -259,6 +259,10 @@
         $(document).ready(function () {
             $('.modal').modal();
             $("#code-section").hide();
+            $("#footer-placeholder").css({
+                "width": "100%",
+                "height": $("footer").css("height")
+            });
             $("#code-section-toggle").click(function () {
                 $("#code-section").animate({height: 'toggle'}, 250, function () {
                     $("#footer-placeholder").css({
