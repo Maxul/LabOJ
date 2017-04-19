@@ -26,3 +26,9 @@
       transition: background-color 0.25s;
       background-color: #78909c;
   }
+
+  .toggle-btn-floating{
+  }
+  .toggle-btn-floating.active {
+      transform: rotate(180deg);
+  }
